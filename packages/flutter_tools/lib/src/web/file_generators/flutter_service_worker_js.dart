@@ -125,9 +125,11 @@ self.addEventListener("fetch", (event) => {
     key = '/';
   }
 
-  // In order to get the actual asset key it must remove the base-href
-  // from the requested URL
-  key = key.substring(BASE_HREF.length);
+  // In order to get the actual asset key, it must remove the base-href from the requested URL
+  // in case the URL is from the same origin
+  if(event.request.url.startsWith(origin)) {
+    key = key.substring(BASE_HREF.length);
+  }
 
   // If the URL is not the RESOURCE list then return to signal that the
   // browser should take over.
